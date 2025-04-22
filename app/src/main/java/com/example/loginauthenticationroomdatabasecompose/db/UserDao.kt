@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -19,4 +20,13 @@ interface UserDao {
     @Query("UPDATE users SET password = :newPassword WHERE username = :username")
     suspend fun updatePassword(username: String, newPassword: String): Int
 
+}
+
+@Dao
+interface DataDao {
+    @Insert
+    suspend fun insert(entry: DataEntry)
+
+    @Query("SELECT * FROM data_table")
+    fun getAll(): Flow<List<DataEntry>>
 }

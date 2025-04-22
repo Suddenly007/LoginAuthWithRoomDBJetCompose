@@ -4,10 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class, DataEntry::class], version = 1, exportSchema = true)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun dataDao(): DataDao
 
     companion object {
         @Volatile private var INSTANCE: AppDatabase? = null
@@ -17,7 +20,7 @@ abstract class AppDatabase : RoomDatabase() {
                 Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_database"
+                    "app_databa"
                 ).build().also { INSTANCE = it }
             }
         }
